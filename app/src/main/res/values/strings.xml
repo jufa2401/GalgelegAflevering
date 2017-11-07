@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">GalgelegAflevering</string>
+    <string name="Galgen">Galgen</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="play_again">spil igen</string>
+    <string name="example_string">example_string</string>
+    <string name="score_text">Din score blev:</string>
+    <string name="start_game">Start</string>
+    <string name="help">Hjælp</string>
+    <string name="high_score">Scores</string>
+    <string name="menu">Menu</string>
+    <string name="help_message">Gæt et enkelt bogstav af gangen indtil du gætter det fulde ord. \nDu må få 6 forkerte, før du taber spillet. \n\nEn score vil blive tildelt til sidst.</string>
+    <string name="welcome">Velkommen, dit første gæt starter spillet</string>
+    <string name="correct_answer">Du gættede korrekt</string>
+    <string name="you_have">du har</string>
+    <string name="wrong">forkerte</string>
+    <string name="winner_winner_chicken_dinner">Winner winner chicken dinner</string>
+    <string name="loss">Øv, du tabte, ordet var:  </string>
+    <string name="game_end">Spillet er slut, du kan nu vælge at se din score, eller gå til hovedmenuen, hvor du kan starte et nyt spil.</string>
+
+    <string-array name="example_strings">
+        <item>Eksempel</item>
+        <item>Eksempel</item>
+        <item>Eksempel</item>
+        <item>Eksempel</item>
+        <item>Eksempel</item>
+        <item>Eksempel</item>
+        <item>Eksempel</item>
+    </string-array>
+</resources>

@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.s165158.galgelegaflevering.ListFragment"
+    android:orientation="vertical">
+
+   <TextView
+       android:id="@+id/score_text"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:fontFamily="sans-serif"
+       android:paddingLeft="10dp"
+       android:text="@string/score_text"
+       android:textColor="@android:color/darker_gray"
+       android:textSize="18sp" />
+
+   <TextView
+       android:id="@+id/score"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_toEndOf="@id/score_text"
+       android:fontFamily="sans-serif-bold"
+       android:text="@string/example_string"
+       android:textColor="@android:color/darker_gray"
+       android:textSize="18sp"
+       android:textStyle="bold" />
+
+   <FrameLayout
+       android:id="@+id/frameLayout"
+       android:layout_below="@id/score_text"
+       android:layout_width="match_parent"
+       android:layout_height="350dp">
+
+
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/listRecyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@android:color/white"
+
+          tools:context=".fragments.ListFragment">
+
+      </android.support.v7.widget.RecyclerView>
+
+   </FrameLayout>
+
+   <Button
+       android:id="@+id/button_play_again"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerHorizontal="true"
+       android:layout_below="@id/frameLayout"
+       android:layout_marginTop="16dp"
+       android:background="@drawable/shadow"
+       android:foreground="?android:attr/selectableItemBackground"
+       android:text="@string/play_again" />
+
+
+</RelativeLayout>
