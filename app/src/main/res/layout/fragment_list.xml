@@ -27,6 +27,7 @@
        android:textSize="18sp"
        android:textStyle="bold" />
 
+
    <FrameLayout
        android:id="@+id/frameLayout"
        android:layout_below="@id/score_text"

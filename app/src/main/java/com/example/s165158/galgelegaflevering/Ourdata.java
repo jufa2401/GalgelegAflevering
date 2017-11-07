@@ -8,4 +8,5 @@ class Ourdata {
 
     static String[] examples = {"a" , "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c", "b", "c"};
 
+
 }

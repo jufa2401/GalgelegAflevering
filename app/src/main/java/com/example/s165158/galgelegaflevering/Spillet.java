@@ -3,8 +3,11 @@ package com.example.s165158.galgelegaflevering;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +15,24 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
 import com.example.s165158.galgelegaflevering.Udleveret.Galgelogik;
+
 
 import java.util.Date;
 
 public class Spillet extends Fragment {
 
+//    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//    String[] savedScores;
+    private Date date;
+    private int antalforkerte;
 
 
-    private int antalforkerte;private Date date;
+
+    private int forsøg = 0;
     private String savedWord, end_game;
     private TextView the_word, status;
     private LetterAdapter ltrAdapt;
@@ -57,7 +67,7 @@ public class Spillet extends Fragment {
         galge = rootView.findViewById(R.id.galgen);
         galge.setImageResource(R.drawable.galge);
 
-        end_game = getResources().getString(R.string.game_end);
+
         play();
 
         return rootView;
@@ -77,11 +87,12 @@ public class Spillet extends Fragment {
                 }
 
 
-                return null;
+           return Log.d("hent fra dr success","Ordene blev korrekt hentet fra DR's server");
             }
 
             @Override
             protected void onPostExecute(Object result) {
+              Log.d("hent fra dr fail","resultat: " + result);
 
             }
         }.execute();
@@ -92,6 +103,7 @@ public class Spillet extends Fragment {
 
     public void letterPressed(char letterChar) {
         galgelogik.gætBogstav("" + letterChar);
+        forsøg++;
         update();
         if (galgelogik.erSpilletSlut()) return;
 
@@ -100,6 +112,8 @@ public class Spillet extends Fragment {
     public void update() {
         if (galgelogik.erSpilletVundet() == true) {
             status.setText(getResources().getText(R.string.winner_winner_chicken_dinner));
+            setEnd_game(getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
+                    + getResources().getString(R.string.game_end));
 
         }
         if (galgelogik.erSpilletTabt() == true) {
@@ -112,6 +126,21 @@ public class Spillet extends Fragment {
             setSavedWord(galgelogik.getOrdet());
             setAntalforkerte(galgelogik.getAntalForkerteBogstaver());
             setDate(new Date());
+
+//           // TODO: Database Access
+//            try {
+//                prefs.edit()
+//                        .putString("Ord",savedWord)
+//                        .putInt("Forsøg",antalforkerte)
+//                        .putString("Dato & Tid",date.toString()).apply();
+//
+//                toastMessage("Gemmer..");
+//
+//            } catch (Exception e) {
+//                toastMessage("Vi kunne ikke gemme dit spil");
+//                e.printStackTrace();
+//            }
+//
 
 
 
@@ -154,7 +183,16 @@ public class Spillet extends Fragment {
 
         }
     }
-//    Getters and Setters
+
+
+    /**
+     * Custom toast
+     * @param message
+     */
+    public void toastMessage(String message) {
+        Toast.makeText(getContext(),message, Toast.LENGTH_SHORT).show();
+    }
+    //    Getters and Setters
     public void setEnd_game(String end_game) {
         this.end_game = end_game;
     }
@@ -170,6 +208,8 @@ public class Spillet extends Fragment {
     public Date getDate() {return date;}
 
     public void setDate(Date date) {this.date = date;}
+
+    public int getForsøg() {return forsøg;}
 }
 
 

@@ -7,15 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+
 /**
  * Created by s165158 on 04-11-2017.
  */
 
 public class ListAdapter extends RecyclerView.Adapter {
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_item,parent,false);
+
         return new ListViewHolder(view);
+
+
     }
 
     @Override
