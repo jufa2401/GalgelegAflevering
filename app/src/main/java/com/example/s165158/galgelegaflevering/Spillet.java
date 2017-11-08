@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
 import com.example.s165158.galgelegaflevering.Udleveret.Galgelogik;
+import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
 
 
 import java.util.Date;
@@ -31,7 +32,7 @@ public class Spillet extends Fragment {
     private int antalforkerte;
 
 
-
+    private DatabaseHelper databaseHelper;
     private int forsøg = 0;
     private String savedWord, end_game;
     private TextView the_word, status;
@@ -55,7 +56,7 @@ public class Spillet extends Fragment {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.fragment_spillet);
         View rootView = inflater.inflate(R.layout.fragment_spillet, container, false);
-
+        databaseHelper = new DatabaseHelper(getActivity());
         getActivity().setTitle(R.string.Galgen);
         letters = rootView.findViewById(R.id.letters);
         ltrAdapt = new LetterAdapter(this);
@@ -77,26 +78,34 @@ public class Spillet extends Fragment {
         galgelogik.nulstil();
         the_word.setText("");
 
+
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
                     galgelogik.hentOrdFraDr();
+                    Log.e("ord fra DR", "DR Ord hentet");
+                } catch (InterruptedException e) {
+                    Thread.interrupted();
+                    Log.e("ord fra DR", "Kunne ikke hente ord fra DR");
+                    e.printStackTrace();
+//                   Luk programmet
+//                    getActivity().finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
 
-           return Log.d("hent fra dr success","Ordene blev korrekt hentet fra DR's server");
+                return Log.d("hent fra dr success","Ordene blev korrekt hentet fra DR's server");
             }
 
             @Override
             protected void onPostExecute(Object result) {
-              Log.d("hent fra dr fail","resultat: " + result);
+              the_word.setText(galgelogik.getSynligtOrd());
 
             }
         }.execute();
-        the_word.setText(galgelogik.getSynligtOrd());
+
 
 
     }
@@ -128,11 +137,12 @@ public class Spillet extends Fragment {
             setDate(new Date());
 
 //           // TODO: Database Access
+            databaseHelper.addData("noname",savedWord,antalforkerte,date.toString());
 //            try {
 //                prefs.edit()
 //                        .putString("Ord",savedWord)
 //                        .putInt("Forsøg",antalforkerte)
-//                        .putString("Dato & Tid",date.toString()).apply();
+//                        .putString("Dato & Tid",datearray.toString()).apply();
 //
 //                toastMessage("Gemmer..");
 //

@@ -18,9 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
 
 import org.w3c.dom.Text;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 //import android.widget.ListAdapter;
 
@@ -30,20 +32,26 @@ import java.util.ArrayList;
  */
 
 public class ListFragment extends Fragment {
+
     Button button_playagain;
-    SharedPreferences prefs;
-    String[] scores;
+
+    DatabaseHelper databaseHelper;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInsanceState){
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.listRecyclerView);
         getActivity().setTitle(R.string.high_score);
 
+        databaseHelper = new DatabaseHelper(getActivity());
+
+        System.out.println(databaseHelper.getData().toString());
+
+
 //        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //        scores = prefs.getString("Forsøg","").split("\\|");
 //        StringBuilder scorebuilder = new StringBuilder("");
 //
-//        for(String score:scores){
-//            scorebuilder.append(score+"\n");
+//        for(String scorearray:scores){
+//            scorebuilder.append(scorearray+"\n");
 //        }
 
 
@@ -60,8 +68,16 @@ public class ListFragment extends Fragment {
 
             }
         });
-        ListAdapter listAdapter = new ListAdapter();
-        recyclerView.setAdapter(listAdapter);
+
+//        ListAdapter listAdapter = new ListAdapter(databaseHelper.getColumn(0),
+//                databaseHelper.getColumn(1), databaseHelper.getColumn(2),
+//                databaseHelper.getColumn(3),databaseHelper.getColumn(4));
+
+        RecyclerListAdapter recyclerListAdapter = new RecyclerListAdapter(databaseHelper.getColumn(0),
+                databaseHelper.getColumn(1), databaseHelper.getColumn(2),
+                databaseHelper.getColumn(3),databaseHelper.getColumn(4));
+
+        recyclerView.setAdapter(recyclerListAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -75,6 +91,10 @@ public class ListFragment extends Fragment {
     private void toastMessage(String message){
         Toast.makeText(getContext(),message, Toast.LENGTH_SHORT).show();
     }
+
+
+
 }
+
 
 
