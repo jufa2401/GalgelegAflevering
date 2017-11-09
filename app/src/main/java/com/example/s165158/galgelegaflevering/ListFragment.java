@@ -2,11 +2,7 @@ package com.example.s165158.galgelegaflevering;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,12 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.s165158.galgelegaflevering.Objekter.RecyclerListAdapter;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
-
-import org.w3c.dom.Text;
-
-import java.io.PrintStream;
-import java.util.ArrayList;
 //import android.widget.ListAdapter;
 
 
@@ -57,7 +49,7 @@ public class ListFragment extends Fragment {
             scoreint_TextView.setVisibility(View.VISIBLE);
             Log.d("score","getInt score fra bundle: " + score);
 
-           scoreint_TextView.setText(stringscore);
+            scoreint_TextView.setText(stringscore);
 
         }
 
@@ -78,15 +70,18 @@ public class ListFragment extends Fragment {
             }
         });
 
-//        ListAdapter listAdapter = new ListAdapter(databaseHelper.getColumn(0),
-//                databaseHelper.getColumn(1), databaseHelper.getColumn(2),
-//                databaseHelper.getColumn(3),databaseHelper.getColumn(4));
-
         RecyclerListAdapter recyclerListAdapter = new RecyclerListAdapter(databaseHelper.getColumn(0),
                 databaseHelper.getColumn(1), databaseHelper.getColumn(2),
                 databaseHelper.getColumn(3),databaseHelper.getColumn(4));
 
+
         recyclerView.setAdapter(recyclerListAdapter);
+        if(recyclerListAdapter.getItemCount() == 0) {
+            score_text_TextView.setText(R.string.no_score);
+            score_text_TextView.setVisibility(View.VISIBLE);
+            toastMessage(getResources().getString(R.string.no_score));
+            button_playagain.setText(R.string.start_game);
+        }
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -99,7 +94,7 @@ public class ListFragment extends Fragment {
      * @param message
      */
     private void toastMessage(String message){
-        Toast.makeText(getContext(),message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
     }
 
 

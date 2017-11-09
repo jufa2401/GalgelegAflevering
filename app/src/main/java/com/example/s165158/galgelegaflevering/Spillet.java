@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
 import com.example.s165158.galgelegaflevering.Udleveret.Galgelogik;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
+import com.github.jinatonic.confetti.CommonConfetti;
 
 
 import java.util.Date;
@@ -125,10 +128,19 @@ public class Spillet extends Fragment {
             setEnd_game(getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
                     + getResources().getString(R.string.game_end));
 
+//            Mediaplayer til 3. Aflevering
+            final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.yababy);
+            mp.start();
+
+
+
         }
         if (galgelogik.erSpilletTabt() == true) {
             status.setText((getResources().getString(R.string.loss) + galgelogik.getOrdet()));
             setEnd_game((getResources().getString(R.string.loss) + galgelogik.getOrdet() + "\n" + getResources().getText(R.string.game_end)));
+//            Mediapleyer til 3. Aflevering
+            final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.dumbass);
+            mp.start();
 
         }
 
@@ -137,7 +149,7 @@ public class Spillet extends Fragment {
             setAntalforkerte(galgelogik.getAntalForkerteBogstaver());
             setDate(new Date());
             Log.d("transferred data", "Følgende gemmes i databasen: "+ "noname" + forsøg + date.toString());
-            databaseHelper.addData("noname",savedWord,forsøg,date.toString());
+            databaseHelper.addData("noname",savedWord,forsøg-antalforkerte,date.toString());
 
 
 
@@ -160,7 +172,7 @@ public class Spillet extends Fragment {
                                     ListFragment score = new ListFragment();
                                     final Bundle bundle = new Bundle();
 //                                    sender scoren med
-                                    bundle.putInt("score",forsøg);
+                                    bundle.putInt("score",forsøg-antalforkerte);
                                     score.setArguments(bundle);
                                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, score).commit();
                                 }

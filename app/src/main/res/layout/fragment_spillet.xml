@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/galgen"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="15dp"
         android:layout_weight="0"
         android:background="@android:color/white"
@@ -59,7 +59,7 @@
     <GridView
         android:id="@+id/letters"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
 
 
         android:layout_gravity="center"
