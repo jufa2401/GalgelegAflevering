@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -52,8 +51,14 @@ public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapt
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         View view = holder.view;
-        TextView Score = (TextView) view.findViewById(R.id.itemText);
-        Score.setText(scorearray[position]);
+        TextView id = (TextView) view.findViewById(R.id.list_item_ID);
+        id.setText(idarray[position]);
+        TextView word = (TextView) view.findViewById(R.id.list_item_Word);
+        word.setText(wordarray[position]);
+        TextView date = (TextView) view.findViewById(R.id.list_item_Date);
+        date.setText(datearray[position]);
+        TextView score = (TextView) view.findViewById(R.id.list_item_Score);
+        score.setText(scorearray[position]);
         view.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

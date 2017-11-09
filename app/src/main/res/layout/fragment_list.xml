@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.s165158.galgelegaflevering.ListFragment"
-    android:orientation="vertical">
+    android:layout_marginBottom="49dp"
+    android:orientation="vertical"
+    tools:context="com.example.s165158.galgelegaflevering.ListFragment">
 
    <TextView
        android:id="@+id/score_text"
@@ -14,7 +15,8 @@
        android:paddingLeft="10dp"
        android:text="@string/score_text"
        android:textColor="@android:color/darker_gray"
-       android:textSize="18sp" />
+       android:textSize="18sp"
+       android:visibility="invisible" />
 
    <TextView
        android:id="@+id/score"
@@ -25,22 +27,35 @@
        android:text="@string/example_string"
        android:textColor="@android:color/darker_gray"
        android:textSize="18sp"
-       android:textStyle="bold" />
+       android:textStyle="bold"
+       android:visibility="invisible" />
 
+
+   <TextView
+       android:id="@+id/descriptive_text"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:paddingLeft="10dp"
+       android:layout_below="@+id/score_text"
+       android:text="ID, Score, Ord, Dato:" />
 
    <FrameLayout
        android:id="@+id/frameLayout"
-       android:layout_below="@id/score_text"
        android:layout_width="match_parent"
-       android:layout_height="350dp">
+       android:layout_height="match_parent"
+       android:layout_above="@+id/button_play_again"
+       android:layout_alignParentStart="true"
+       android:layout_below="@+id/descriptive_text">
 
 
       <android.support.v7.widget.RecyclerView
           android:id="@+id/listRecyclerView"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:background="@android:color/white"
+          android:layout_marginBottom="0dp"
 
+          android:background="@android:color/white"
+          android:paddingBottom="0dp"
           tools:context=".fragments.ListFragment">
 
       </android.support.v7.widget.RecyclerView>
@@ -49,11 +64,14 @@
 
    <Button
        android:id="@+id/button_play_again"
+
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+
        android:layout_centerHorizontal="true"
-       android:layout_below="@id/frameLayout"
-       android:layout_marginTop="16dp"
+       android:layout_marginBottom="0dp"
+       android:layout_marginTop="5dp"
        android:background="@drawable/shadow"
        android:foreground="?android:attr/selectableItemBackground"
        android:text="@string/play_again" />

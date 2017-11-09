@@ -1,5 +1,6 @@
 package com.example.s165158.galgelegaflevering;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -10,8 +11,9 @@ public class MainActivity extends AppCompatActivity
     TextView title_top;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+//        Tvinger aktiviteten til at køre i portrait mode.
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_menu);
         Menu menu = new Menu();
 

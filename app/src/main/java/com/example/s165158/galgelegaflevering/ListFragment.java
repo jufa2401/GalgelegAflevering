@@ -2,6 +2,7 @@ package com.example.s165158.galgelegaflevering;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -33,26 +34,33 @@ import java.util.ArrayList;
 
 public class ListFragment extends Fragment {
 
-    Button button_playagain;
+    private Button button_playagain;
+    private int score;
+    private DatabaseHelper databaseHelper;
+    private TextView score_text_TextView, scoreint_TextView;
 
-    DatabaseHelper databaseHelper;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInsanceState){
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.listRecyclerView);
         getActivity().setTitle(R.string.high_score);
-
         databaseHelper = new DatabaseHelper(getActivity());
 
-        System.out.println(databaseHelper.getData().toString());
+        score_text_TextView = rootView.findViewById(R.id.score_text);
+        scoreint_TextView = rootView.findViewById(R.id.score);
 
 
-//        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        scores = prefs.getString("Forsøg","").split("\\|");
-//        StringBuilder scorebuilder = new StringBuilder("");
-//
-//        for(String scorearray:scores){
-//            scorebuilder.append(scorearray+"\n");
-//        }
+        Bundle args = getArguments();
+        if (args  != null && args.containsKey("score")) {
+            score = args.getInt("score");
+            String stringscore = Integer.toString(score);
+            score_text_TextView.setVisibility(View.VISIBLE);
+            scoreint_TextView.setVisibility(View.VISIBLE);
+            Log.d("score","getInt score fra bundle: " + score);
+
+           scoreint_TextView.setText(stringscore);
+
+        }
+
 
 
         button_playagain = (Button)rootView.findViewById(R.id.button_play_again);
@@ -61,6 +69,7 @@ public class ListFragment extends Fragment {
             public void onClick(View v) {
                 Menu menu = new Menu();
 // Insert the fragment by replacing any existing fragment
+
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, menu)
@@ -83,6 +92,7 @@ public class ListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         return rootView;
     }
+
 
     /**
      * customizable toast

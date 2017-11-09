@@ -30,7 +30,7 @@
         android:layout_weight="4"
         android:fontFamily="sans-serif-smallcaps"
         android:lineSpacingExtra="10sp"
-        android:text="@string/example_string"
+        android:text=""
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/black"

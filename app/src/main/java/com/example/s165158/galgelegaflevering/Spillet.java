@@ -60,10 +60,11 @@ public class Spillet extends Fragment {
         getActivity().setTitle(R.string.Galgen);
         letters = rootView.findViewById(R.id.letters);
         ltrAdapt = new LetterAdapter(this);
-        letters.setAdapter(ltrAdapt);
+//        letters.setAdapter(ltrAdapt);
 
         the_word = rootView.findViewById(R.id.the_word);
         status = rootView.findViewById(R.id.statusText);
+        status.setText(getResources().getText(R.string.waiting));
 
         galge = rootView.findViewById(R.id.galgen);
         galge.setImageResource(R.drawable.galge);
@@ -76,41 +77,41 @@ public class Spillet extends Fragment {
 
     public void play() {
         galgelogik.nulstil();
-        the_word.setText("");
-
+//        the_word.setText("");
 
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
+
                     galgelogik.hentOrdFraDr();
-                    Log.e("ord fra DR", "DR Ord hentet");
+                    Log.e("ord fra DR", "DR Ord hentet, eller fejl i Galgelogik");
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                     Log.e("ord fra DR", "Kunne ikke hente ord fra DR");
                     e.printStackTrace();
 //                   Luk programmet
-//                    getActivity().finish();
+                    getActivity().finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
 
-                return Log.d("hent fra dr success","Ordene blev korrekt hentet fra DR's server");
+                return Log.d("hent fra dr afsluttet","Ordene fra DR er enten hentet eller fejlet");
             }
 
             @Override
             protected void onPostExecute(Object result) {
-              the_word.setText(galgelogik.getSynligtOrd());
+                the_word.setText(galgelogik.getSynligtOrd());
+                letters.setAdapter(ltrAdapt);
+                status.setText(getResources().getText(R.string.welcome));
 
             }
         }.execute();
-
-
-
     }
 
     public void letterPressed(char letterChar) {
+
         galgelogik.gætBogstav("" + letterChar);
         forsøg++;
         update();
@@ -135,22 +136,8 @@ public class Spillet extends Fragment {
             setSavedWord(galgelogik.getOrdet());
             setAntalforkerte(galgelogik.getAntalForkerteBogstaver());
             setDate(new Date());
-
-//           // TODO: Database Access
-            databaseHelper.addData("noname",savedWord,antalforkerte,date.toString());
-//            try {
-//                prefs.edit()
-//                        .putString("Ord",savedWord)
-//                        .putInt("Forsøg",antalforkerte)
-//                        .putString("Dato & Tid",datearray.toString()).apply();
-//
-//                toastMessage("Gemmer..");
-//
-//            } catch (Exception e) {
-//                toastMessage("Vi kunne ikke gemme dit spil");
-//                e.printStackTrace();
-//            }
-//
+            Log.d("transferred data", "Følgende gemmes i databasen: "+ "noname" + forsøg + date.toString());
+            databaseHelper.addData("noname",savedWord,forsøg,date.toString());
 
 
 
@@ -161,13 +148,20 @@ public class Spillet extends Fragment {
                     .setNegativeButton(getResources().getText(R.string.menu), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Menu menu = new Menu();
-                                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, menu).commit();
+                                    getFragmentManager().beginTransaction()
+                                            .replace(R.id.fragment_container, menu)
+                                            .commit();
+
                                 }
                             }
                     )
                     .setPositiveButton(getResources().getText(R.string.high_score), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     ListFragment score = new ListFragment();
+                                    final Bundle bundle = new Bundle();
+//                                    sender scoren med
+                                    bundle.putInt("score",forsøg);
+                                    score.setArguments(bundle);
                                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, score).commit();
                                 }
                             }

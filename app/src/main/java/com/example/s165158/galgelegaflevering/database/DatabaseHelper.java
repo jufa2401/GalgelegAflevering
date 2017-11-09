@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL3 +" TEXT, "+COL4 +" INTEGER, "+COL5 +" DATE)";
+                COL2 +" TEXT, " + COL3 +" TEXT, " + COL4 +" TEXT, "+ COL5 +" DATE)";
         db.execSQL(createTable);
     }
 
@@ -62,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME, null, contentValues);
 
         //if data as inserted incorrectly it will return -1
+        Log.d("result was", result+"");
         if (result == -1) {
             return false;
         } else {
@@ -70,7 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns all the data from database but the ID
+     * Returns all the data from database but the including ID
      * @return
      */
 
@@ -78,7 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + TABLE_NAME;
         SQLiteDatabase db  = this.getReadableDatabase();
         Cursor cursor      = db.rawQuery(selectQuery, null);
-        String[] data      = null;
         ArrayList<String> data2 = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
@@ -87,11 +87,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                data2.add(String.valueOf(cursor.getInt(0)));
                data2.add(cursor.getString(1));
                data2.add(cursor.getString(2));
-               data2.add(String.valueOf(cursor.getInt(4)));
+               data2.add(cursor.getString(3));
                data2.add(cursor.getString(4));
             } while (cursor.moveToNext());
         }
         cursor.close();
+
+        Log.d("data collected from db",data2.toString());
         return data2;
     }
 
@@ -108,7 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for(int i=0; i < arraylistsize; i+=5) {
             int row = i/5;
             ColumnArray[row] = strings.get(i+columnIndex);
-
 
         }
         return ColumnArray;

@@ -5,36 +5,46 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="0dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp"
     android:orientation="horizontal">
     <!--En listerække indeholder som følgende-->
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:animationCache="false"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="66dp">
 
         <TextView
-            android:id="@+id/itemText"
-            android:layout_width="match_parent"
+            android:id="@+id/list_item_ID"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="TextView"
-            android:textAlignment="center"
+            android:layout_weight="0.5"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/infoTextViewID"
-            android:layout_width="match_parent"
+            android:id="@+id/list_item_Score"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textSize="12sp"
-            android:textStyle="italic" />
+            android:layout_weight="1.5"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/list_item_Word"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/list_item_Date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp" />
+
     </LinearLayout>
 </LinearLayout>

@@ -21,6 +21,7 @@
     <string name="game_end">\nSpillet er slut, du kan nu vælge at se din score, eller gå til hovedmenuen, hvor du kan starte et nyt spil.</string>
     <string name="winner">Du vandt du brugte\t</string>
     <string name="attempts">\tforsøg. </string>
+    <string name="waiting">The game is loading the word from DR...</string>
 
     <string-array name="example_strings">
         <item>Eksempel</item>
