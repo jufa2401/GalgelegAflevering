@@ -19,10 +19,13 @@ import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
 import com.example.s165158.galgelegaflevering.Udleveret.Galgelogik;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Spillet extends Fragment {
-    private Date date;
+    private String date;
+    private SimpleDateFormat dateformatter;
+    private Date date2;
     private int antalforkerte;
     private DatabaseHelper databaseHelper;
     private int forsøg = 0;
@@ -115,8 +118,8 @@ public class Spillet extends Fragment {
 //        Når spillet er vundet
         if (galgelogik.erSpilletVundet() == true) {
             status.setText(getResources().getText(R.string.winner_winner_chicken_dinner));
-            setEnd_game(getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
-                    + getResources().getString(R.string.game_end));
+            end_game = getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
+                    + getResources().getString(R.string.game_end);
 
 //            Mediaplayer til 3. Aflevering
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.yababy);
@@ -126,7 +129,7 @@ public class Spillet extends Fragment {
 //        Når spillet er tabt
         if (galgelogik.erSpilletTabt() == true) {
             status.setText((getResources().getString(R.string.loss)+" " + galgelogik.getOrdet()));
-            setEnd_game((getResources().getString(R.string.loss) + galgelogik.getOrdet() + getResources().getText(R.string.game_end)));
+            end_game = getResources().getString(R.string.loss)+" " + galgelogik.getOrdet() + getResources().getText(R.string.game_end);
 //            Mediapleyer til 3. Aflevering
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.dumbass);
             mp.start();
@@ -136,10 +139,12 @@ public class Spillet extends Fragment {
         if (galgelogik.erSpilletSlut() == true) {
             savedWord = galgelogik.getOrdet();
             the_word.setText(savedWord);
-            setAntalforkerte(galgelogik.getAntalForkerteBogstaver());
-            setDate(new Date());
-            Log.d("transferred data", "Følgende gemmes i databasen: "+ "noname" + forsøg + date.toString());
-            databaseHelper.addData("noname",savedWord,forsøg-antalforkerte,date.toString());
+            antalforkerte = galgelogik.getAntalForkerteBogstaver();
+            date2 = new Date();
+            dateformatter = new SimpleDateFormat("H:mm,EEE, MMM d, ''yy");
+            date = dateformatter.format(date2);
+            Log.d("transferred data", "Følgende gemmes i databasen: "+ "noname" + forsøg + date);
+            databaseHelper.addData("noname",savedWord,forsøg-antalforkerte,date);
 
 
 //            Dialog boks for at brugeren skal vide at der sker noget vigtigt.
@@ -219,9 +224,9 @@ public class Spillet extends Fragment {
 
     public void setSavedWord(String savedWord) {this.savedWord = savedWord;}
 
-    public Date getDate() {return date;}
+    public String getDate() {return date;}
 
-    public void setDate(Date date) {this.date = date;}
+    public void setDate(String date) {this.date = date;}
 
     public int getForsøg() {return forsøg;}
 
