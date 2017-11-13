@@ -9,3 +9,4 @@ Nedenfor er screenshots af hvordan appen ser ud på min emulator og telefon:
 ![Game](Game.png)
 ![Loser](Loser.png)
 ![High Score](high_score.png)
+![Winner](winner.png)
