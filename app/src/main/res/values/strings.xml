@@ -6,7 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="play_again">spil igen</string>
     <string name="example_string">example_string</string>
-    <string name="score_text">Din score blev:</string>
+    <string name="score_text">Din score blev: </string>
     <string name="start_game">Start</string>
     <string name="help">Hjælp</string>
     <string name="high_score">Scores</string>
@@ -26,6 +26,8 @@
     <string name="loser_screen">Taberskærm</string>
     <string name="you_won">Du vandt!</string>
     <string name="used_attempts">Du brugte </string>
+    <string name="winner_screen">Vinderskærm</string>
+    <string name="you_lose">Du tabte</string>
 
     <string-array name="example_strings">
         <item>Eksempel</item>

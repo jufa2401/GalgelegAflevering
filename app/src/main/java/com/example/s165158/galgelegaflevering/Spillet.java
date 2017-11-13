@@ -3,17 +3,13 @@ package com.example.s165158.galgelegaflevering;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,8 +18,6 @@ import android.widget.Toast;
 import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
 import com.example.s165158.galgelegaflevering.Udleveret.Galgelogik;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
-import com.github.jinatonic.confetti.CommonConfetti;
-
 
 import java.util.Date;
 
@@ -34,7 +28,7 @@ public class Spillet extends Fragment {
     private Date date;
     private int antalforkerte;
 
-
+    private boolean gameWon;
     private DatabaseHelper databaseHelper;
     private int forsøg = 0;
     private String savedWord, end_game;
@@ -127,6 +121,7 @@ public class Spillet extends Fragment {
             status.setText(getResources().getText(R.string.winner_winner_chicken_dinner));
             setEnd_game(getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
                     + getResources().getString(R.string.game_end));
+            gameWon = true;
 
 //            Mediaplayer til 3. Aflevering
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.yababy);
@@ -137,7 +132,8 @@ public class Spillet extends Fragment {
         }
         if (galgelogik.erSpilletTabt() == true) {
             status.setText((getResources().getString(R.string.loss) + galgelogik.getOrdet()));
-            setEnd_game((getResources().getString(R.string.loss) + galgelogik.getOrdet() + "\n" + getResources().getText(R.string.game_end)));
+            setEnd_game((getResources().getString(R.string.loss) + galgelogik.getOrdet() + getResources().getText(R.string.game_end)));
+            gameWon = false;
 //            Mediapleyer til 3. Aflevering
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.dumbass);
             mp.start();
@@ -155,26 +151,27 @@ public class Spillet extends Fragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder
-                    .setMessage(end_game)
+                    .setMessage(R.string.game_end)
                     .setCancelable(false)
-                    .setNegativeButton(getResources().getText(R.string.menu), new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getText(R.string.high_score), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Menu menu = new Menu();
-                                    getFragmentManager().beginTransaction()
-                                            .replace(R.id.fragment_container, menu)
-                                            .commit();
-
-                                }
-                            }
-                    )
-                    .setPositiveButton(getResources().getText(R.string.high_score), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    ListFragment score = new ListFragment();
+                                    WinnerScreen winnerScreen = new WinnerScreen();
+                                    LoserScreen loserScreen = new LoserScreen();
                                     final Bundle bundle = new Bundle();
 //                                    sender scoren med
                                     bundle.putInt("score",forsøg-antalforkerte);
-                                    score.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, score).commit();
+                                    bundle.putString("endgame tekst", end_game);
+
+                                    if (gameWon == true) {
+                                        winnerScreen.setArguments(bundle);
+
+                                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, winnerScreen).commit();
+                                    }
+                                    if (gameWon == false) {
+                                        loserScreen.setArguments(bundle);
+                                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, loserScreen).commit();
+
+                                    }
                                 }
                             }
                     );
