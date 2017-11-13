@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * Influenced by https://www.youtube.com/watch?v=aQAIMY-HzL8&t
+ * Mine is more complicated because i use more data and therefore i had to make my own methods
+ * getData & getColumnArray is entirely of my own imagination
  *
- * **IGNORE THIS CLASS**, Was an attempt to use SqLite instead of PreferenceManager, but i was unable to implement it satisfyingly
  * Created by Justin on 07/11/2017.
  */
 
@@ -72,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Returns all the data from database but the including ID
-     * @return
+     * @return Returns the data from column 0,1,2,3,4 in a String ArrayList
      */
 
     public ArrayList<String> getData() {

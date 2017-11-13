@@ -22,13 +22,13 @@ public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapt
         this.datearray = datearray;
     }
 
-    String[] idarray, namearray, wordarray, scorearray, datearray;
+    private String[] idarray, namearray, wordarray, scorearray, datearray;
     Listener mListener;
 
 
-
-    public static interface Listener{
-        public void onClick(int position);
+//    On click listener for position
+    public interface Listener{
+        void onClick(int position);
     }
 
     public void setListener(Listener listener) {
@@ -49,7 +49,7 @@ public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapt
 
         return new ViewHolder(view);
     }
-
+//    Bemærk jeg bruger ikke name endnu, det er et parameter jeg lagde ind i klassen fordi jeg kunne forestille mig at implementere det senere enten sammen eller i stedet for ID.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         View view = holder.view;

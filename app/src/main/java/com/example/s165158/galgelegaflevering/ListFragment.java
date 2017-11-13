@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.s165158.galgelegaflevering.Objekter.RecyclerListAdapter;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
-//import android.widget.ListAdapter;
+
 
 
 /**

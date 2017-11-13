@@ -1,6 +1,6 @@
 package com.example.s165158.galgelegaflevering.Objekter;
 /*
-    Influenced by https://github.com/yoshuawuyts/hangDroid/tree/master/src/com/yoshuawuyts/hangdroid
+   Largely influenced by https://github.com/yoshuawuyts/hangDroid/tree/master/src/com/yoshuawuyts/hangdroid
    amendments have been made.
  */
 
@@ -25,9 +25,11 @@ public class LetterAdapter extends BaseAdapter {
 
     public LetterAdapter(Spillet c) {
         letters=new String[29];
+//       tæller alfabetet op
         for (int a = 0; a < letters.length; a++) {
             letters[a] = "" + (char)(a+'a');
         }
+//        sætter de danske bogstaver
         letters[26] = "æ";
         letters[27] = "ø";
         letters[28] = "å";
@@ -57,7 +59,7 @@ public class LetterAdapter extends BaseAdapter {
         //set the text to this letter
         letterBtn.setText(letters[position]);
 
-//        sets the onClickListener, tried to move this method into "Spillet Fragment", but ended up keeping it here.
+
         letterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +69,7 @@ public class LetterAdapter extends BaseAdapter {
 
                 // button is no longer available for press
                 v.setEnabled(false);
+//                rydder tekst for knappen
                 ((TextView) v).setText("");
                 // Kode til at sætte knap usynlig, valgt ikke at bruge for at beholde knaptryksanimation. Kunne beholdt animationen og få knappenn til at forsvinde ved at lave trådprogrammering, det er fravalgt.
                 //                letterBtn.setVisibility(convertView.INVISIBLE);

@@ -22,9 +22,6 @@ import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
 import java.util.Date;
 
 public class Spillet extends Fragment {
-
-//    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//    String[] savedScores;
     private Date date;
     private int antalforkerte;
     private DatabaseHelper databaseHelper;
@@ -45,7 +42,6 @@ public class Spillet extends Fragment {
             R.drawable.forkert6,
     };
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +51,9 @@ public class Spillet extends Fragment {
         getActivity().setTitle(R.string.Galgen);
         letters = rootView.findViewById(R.id.letters);
         ltrAdapt = new LetterAdapter(this);
-//        letters.setAdapter(ltrAdapt);
 
         the_word = rootView.findViewById(R.id.the_word);
+
         status = rootView.findViewById(R.id.statusText);
         status.setText(getResources().getText(R.string.waiting));
 
@@ -73,7 +69,7 @@ public class Spillet extends Fragment {
     public void play() {
         galgelogik.nulstil();
 //        the_word.setText("");
-
+//        Async task til at opdatere ord fra DR.
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -94,7 +90,7 @@ public class Spillet extends Fragment {
 
                 return Log.d("hent fra dr afsluttet","Ordene fra DR er enten hentet eller fejlet");
             }
-
+            //            Efer udførelsen af at hente ordet fra DR.
             @Override
             protected void onPostExecute(Object result) {
                 the_word.setText(galgelogik.getSynligtOrd());
@@ -104,7 +100,7 @@ public class Spillet extends Fragment {
             }
         }.execute();
     }
-
+    // Når man trykker på tastaturet
     public void letterPressed(char letterChar) {
 
         galgelogik.gætBogstav("" + letterChar);
@@ -114,8 +110,9 @@ public class Spillet extends Fragment {
 
     }
 
-
+//    Opdateringer og gennemtjek efter der bliver trykket
     public void update() {
+//        Når spillet er vundet
         if (galgelogik.erSpilletVundet() == true) {
             status.setText(getResources().getText(R.string.winner_winner_chicken_dinner));
             setEnd_game(getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
@@ -125,9 +122,8 @@ public class Spillet extends Fragment {
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.yababy);
             mp.start();
 
-
-
         }
+//        Når spillet er tabt
         if (galgelogik.erSpilletTabt() == true) {
             status.setText((getResources().getString(R.string.loss)+" " + galgelogik.getOrdet()));
             setEnd_game((getResources().getString(R.string.loss) + galgelogik.getOrdet() + getResources().getText(R.string.game_end)));
@@ -136,7 +132,7 @@ public class Spillet extends Fragment {
             mp.start();
 
         }
-
+//        Når spillet er slut. Altså ting der er generelle både for når der er tabt og vundet.
         if (galgelogik.erSpilletSlut() == true) {
             savedWord = galgelogik.getOrdet();
             the_word.setText(savedWord);
@@ -146,7 +142,7 @@ public class Spillet extends Fragment {
             databaseHelper.addData("noname",savedWord,forsøg-antalforkerte,date.toString());
 
 
-
+//            Dialog boks for at brugeren skal vide at der sker noget vigtigt.
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder
                     .setMessage(R.string.game_has_ended)
@@ -184,6 +180,7 @@ public class Spillet extends Fragment {
             return;
         }
 
+//        Hvis sidste bogstav er gættet forkert.
         if (galgelogik.erSidsteBogstavKorrekt() == false) {
             if (galgelogik.getAntalForkerteBogstaver() == 1) {
                 status.setText("Du har: " + galgelogik.getAntalForkerteBogstaver() + " forkert, prøv igen");
@@ -192,7 +189,7 @@ public class Spillet extends Fragment {
                 status.setText("Du har: " + galgelogik.getAntalForkerteBogstaver() + " forkerte, prøv igen");
                 galge.setImageResource(galgeimg[galgelogik.getAntalForkerteBogstaver()]);
             }
-
+//          Hvis sidste bogstav er gættet rigtigt
         } else if (galgelogik.erSidsteBogstavKorrekt() == true) {
             status.setText("Du gættede rigtigt!");
             the_word.setText(galgelogik.getSynligtOrd());
