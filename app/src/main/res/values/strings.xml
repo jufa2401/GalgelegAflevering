@@ -23,6 +23,9 @@
     <string name="attempts">\tforsøg. </string>
     <string name="waiting">The game is loading the word from DR...</string>
     <string name="no_score">Ingen scores endnu, spil et spil for at gemme en score her!</string>
+    <string name="loser_screen">Taberskærm</string>
+    <string name="you_won">Du vandt!</string>
+    <string name="used_attempts">Du brugte </string>
 
     <string-array name="example_strings">
         <item>Eksempel</item>
