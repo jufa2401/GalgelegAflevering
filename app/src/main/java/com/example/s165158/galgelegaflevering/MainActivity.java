@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     TextView title_top;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,10 +19,42 @@ public class MainActivity extends AppCompatActivity
 
         getFragmentManager().beginTransaction().add(R.id.fragment_container, menu).commit();
     }
+
+    //  Metode til at sætte titlen for skærmbilledet
     @Override
     public void setTitle(int resid) {
         title_top = findViewById(R.id.head);
         String title = getString(resid);
         title_top.setText(title);
+    }
+
+    //    Metode til at stoppe brugeren for at gå tilbage til tidligere skærme, hvor han ikke skal.
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
+        switch (count) {
+            case 0:
+                super.onBackPressed();
+                break;
+            case 1:
+                super.onBackPressed();
+                break;
+            case 2:
+//
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            default:
+                getFragmentManager().popBackStack();
+                break;
+        }
+
     }
 }

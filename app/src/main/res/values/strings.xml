@@ -28,6 +28,8 @@
     <string name="used_attempts">Du brugte </string>
     <string name="winner_screen">Vinderskærm</string>
     <string name="you_lose">Du tabte</string>
+    <string name="game_has_ended">Spillet er slut, tryk på knappen for at fortsætte</string>
+    <string name="ok">OK</string>
 
     <string-array name="example_strings">
         <item>Eksempel</item>

@@ -55,6 +55,7 @@ public class Spillet extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_spillet, container, false);
         databaseHelper = new DatabaseHelper(getActivity());
         getActivity().setTitle(R.string.Galgen);
+
         letters = rootView.findViewById(R.id.letters);
         ltrAdapt = new LetterAdapter(this);
 //        letters.setAdapter(ltrAdapt);
@@ -151,9 +152,9 @@ public class Spillet extends Fragment {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder
-                    .setMessage(R.string.game_end)
+                    .setMessage(R.string.game_has_ended)
                     .setCancelable(false)
-                    .setNegativeButton(getResources().getText(R.string.high_score), new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getResources().getText(R.string.ok), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     WinnerScreen winnerScreen = new WinnerScreen();
                                     LoserScreen loserScreen = new LoserScreen();
@@ -165,11 +166,17 @@ public class Spillet extends Fragment {
                                     if (gameWon == true) {
                                         winnerScreen.setArguments(bundle);
 
-                                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, winnerScreen).commit();
+                                        getFragmentManager().beginTransaction()
+                                                .replace(R.id.fragment_container, winnerScreen)
+                                                .addToBackStack(null)
+                                                .commit();
                                     }
                                     if (gameWon == false) {
                                         loserScreen.setArguments(bundle);
-                                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, loserScreen).commit();
+                                        getFragmentManager().beginTransaction()
+                                                .replace(R.id.fragment_container, loserScreen)
+                                                .addToBackStack(null)
+                                                .commit();
 
                                     }
                                 }
@@ -223,6 +230,7 @@ public class Spillet extends Fragment {
     public void setDate(Date date) {this.date = date;}
 
     public int getForsøg() {return forsøg;}
+
 }
 
 

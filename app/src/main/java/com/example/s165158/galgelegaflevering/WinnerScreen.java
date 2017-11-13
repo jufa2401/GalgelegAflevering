@@ -56,7 +56,7 @@ public class WinnerScreen extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, menu)
-                        .disallowAddToBackStack()
+                        .addToBackStack(null)
                         .commit();
 
             }
@@ -73,7 +73,7 @@ public class WinnerScreen extends Fragment {
                 highscore.setArguments(bundle);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, highscore)
-                        .disallowAddToBackStack()
+                        .addToBackStack(null)
                         .commit();
 
             }
