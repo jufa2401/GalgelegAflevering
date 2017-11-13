@@ -2,7 +2,7 @@
     <string name="app_name">GalgelegAflevering</string>
     <string name="Galgen">Galgen</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: App content strings -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="play_again">spil igen</string>
     <string name="example_string">example_string</string>
@@ -18,9 +18,9 @@
     <string name="wrong">forkerte</string>
     <string name="winner_winner_chicken_dinner">Winner winner chicken dinner</string>
     <string name="loss">Du har tabt, ordet var:  </string>
-    <string name="game_end">\nSpillet er slut, du kan nu vælge at se din score, eller gå til hovedmenuen, hvor du kan starte et nyt spil.</string>
+    <string name="game_end">\nSpillet er slut, du kan nu vælge at se din score på highscorelisten, eller gå til hovedmenuen, hvor du kan starte et nyt spil.</string>
     <string name="winner">Du vandt du brugte\t</string>
-    <string name="attempts">\tforsøg. </string>
+    <string name="attempts"> forsøg. </string>
     <string name="waiting">The game is loading the word from DR...</string>
     <string name="no_score">Ingen scores endnu, spil et spil for at gemme en score her!</string>
     <string name="loser_screen">Taberskærm</string>

@@ -27,8 +27,6 @@ public class Spillet extends Fragment {
 //    String[] savedScores;
     private Date date;
     private int antalforkerte;
-
-    private boolean gameWon;
     private DatabaseHelper databaseHelper;
     private int forsøg = 0;
     private String savedWord, end_game;
@@ -55,7 +53,6 @@ public class Spillet extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_spillet, container, false);
         databaseHelper = new DatabaseHelper(getActivity());
         getActivity().setTitle(R.string.Galgen);
-
         letters = rootView.findViewById(R.id.letters);
         ltrAdapt = new LetterAdapter(this);
 //        letters.setAdapter(ltrAdapt);
@@ -117,12 +114,12 @@ public class Spillet extends Fragment {
 
     }
 
+
     public void update() {
         if (galgelogik.erSpilletVundet() == true) {
             status.setText(getResources().getText(R.string.winner_winner_chicken_dinner));
             setEnd_game(getResources().getString(R.string.winner) + getForsøg() + getResources().getString(R.string.attempts)
                     + getResources().getString(R.string.game_end));
-            gameWon = true;
 
 //            Mediaplayer til 3. Aflevering
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.yababy);
@@ -132,9 +129,8 @@ public class Spillet extends Fragment {
 
         }
         if (galgelogik.erSpilletTabt() == true) {
-            status.setText((getResources().getString(R.string.loss) + galgelogik.getOrdet()));
+            status.setText((getResources().getString(R.string.loss)+" " + galgelogik.getOrdet()));
             setEnd_game((getResources().getString(R.string.loss) + galgelogik.getOrdet() + getResources().getText(R.string.game_end)));
-            gameWon = false;
 //            Mediapleyer til 3. Aflevering
             final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.dumbass);
             mp.start();
@@ -142,7 +138,8 @@ public class Spillet extends Fragment {
         }
 
         if (galgelogik.erSpilletSlut() == true) {
-            setSavedWord(galgelogik.getOrdet());
+            savedWord = galgelogik.getOrdet();
+            the_word.setText(savedWord);
             setAntalforkerte(galgelogik.getAntalForkerteBogstaver());
             setDate(new Date());
             Log.d("transferred data", "Følgende gemmes i databasen: "+ "noname" + forsøg + date.toString());
@@ -163,7 +160,7 @@ public class Spillet extends Fragment {
                                     bundle.putInt("score",forsøg-antalforkerte);
                                     bundle.putString("endgame tekst", end_game);
 
-                                    if (gameWon == true) {
+                                    if (galgelogik.erSpilletVundet() == true) {
                                         winnerScreen.setArguments(bundle);
 
                                         getFragmentManager().beginTransaction()
@@ -171,7 +168,7 @@ public class Spillet extends Fragment {
                                                 .addToBackStack(null)
                                                 .commit();
                                     }
-                                    if (gameWon == false) {
+                                    if (galgelogik.erSpilletTabt() == true) {
                                         loserScreen.setArguments(bundle);
                                         getFragmentManager().beginTransaction()
                                                 .replace(R.id.fragment_container, loserScreen)

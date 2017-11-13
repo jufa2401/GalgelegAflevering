@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="@string/example_string"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_marginTop="34dp"
-        android:text="TextView"
+        android:text="@string/example_string"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/winner-loser_text"
@@ -41,12 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:text="TextView"
+        android:text="@string/example_string"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/winner-loser_score_descriptive_text"
         app:layout_constraintBottom_toBottomOf="@+id/winner-loser_score_descriptive_text"
-        app:layout_constraintStart_toEndOf="@+id/winner-loser_score_descriptive_text"
-        tools:layout_editor_absoluteX="240dp"
-        tools:layout_editor_absoluteY="235dp" />
+        app:layout_constraintStart_toEndOf="@+id/winner-loser_score_descriptive_text" />
 
     <TextView
         android:id="@+id/winner-loser_score_descriptive_text"
@@ -55,10 +55,9 @@
 
         android:layout_marginTop="15dp"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/endGame"
-        app:layout_constraintTop_toBottomOf="@+id/endGame"
-        tools:layout_editor_absoluteX="96dp"
-        tools:layout_editor_absoluteY="235dp" />
+        app:layout_constraintTop_toBottomOf="@+id/endGame" />
 
     <Button
         android:id="@+id/button_play_again_winner_loser"

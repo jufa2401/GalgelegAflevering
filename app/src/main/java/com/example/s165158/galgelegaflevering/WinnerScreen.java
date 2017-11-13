@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class WinnerScreen extends Fragment {
 
-    private TextView winner, winner_descriptive, winner_score;
+    private TextView winner, winner_descriptive, winner_score, endGame_TextView;
     private Button play_again, high_scores;
     private int score;
 
@@ -37,6 +37,10 @@ public class WinnerScreen extends Fragment {
 
         winner_score = rootView.findViewById(R.id.winner_loser_score);
         Bundle args = getArguments();
+
+        endGame_TextView = rootView.findViewById(R.id.endGame);
+        String endGame = args.getString("endgame tekst");
+        endGame_TextView.setText(endGame);
 
         score = args.getInt("score");
         String stringscore = Integer.toString(score);
