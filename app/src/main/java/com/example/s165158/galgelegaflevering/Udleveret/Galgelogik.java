@@ -20,6 +20,32 @@ public class Galgelogik {
   private boolean spilletErTabt;
 
 
+  public Galgelogik() {
+    muligeOrd.add("bil");
+    muligeOrd.add("computer");
+    muligeOrd.add("programmering");
+    muligeOrd.add("motorvej");
+    muligeOrd.add("busrute");
+    muligeOrd.add("gangsti");
+    muligeOrd.add("skovsnegl");
+    muligeOrd.add("solsort");
+    muligeOrd.add("seksten");
+    muligeOrd.add("sytten");
+    nulstil();
+  }
+
+  public static String hentUrl(String url) throws IOException {
+    System.out.println("Henter data fra " + url);
+    BufferedReader br = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
+    StringBuilder sb = new StringBuilder();
+    String linje = br.readLine();
+    while (linje != null) {
+      sb.append(linje + "\n");
+      linje = br.readLine();
+    }
+    return sb.toString();
+  }
+
   public ArrayList<String> getBrugteBogstaver() {
     return brugteBogstaver;
   }
@@ -52,21 +78,6 @@ public class Galgelogik {
     return spilletErTabt || spilletErVundet;
   }
 
-
-  public Galgelogik() {
-    muligeOrd.add("bil");
-    muligeOrd.add("computer");
-    muligeOrd.add("programmering");
-    muligeOrd.add("motorvej");
-    muligeOrd.add("busrute");
-    muligeOrd.add("gangsti");
-    muligeOrd.add("skovsnegl");
-    muligeOrd.add("solsort");
-    muligeOrd.add("seksten");
-    muligeOrd.add("sytten");
-    nulstil();
-  }
-
   public void nulstil() {
     brugteBogstaver.clear();
     antalForkerteBogstaver = 0;
@@ -75,7 +86,6 @@ public class Galgelogik {
     ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
     opdaterSynligtOrd();
   }
-
 
   private void opdaterSynligtOrd() {
     synligtOrd = "";
@@ -89,6 +99,22 @@ public class Galgelogik {
         spilletErVundet = false;
       }
     }
+  }
+
+  // Ny metode så man kan sætte ordet ud fra et udvalg og den returnerer dette
+  public String opdaterSynligtOrdFraValg(String ordet) {
+    synligtOrd = "";
+    spilletErVundet = true;
+    for (int n = 0; n < ordet.length(); n++) {
+      String bogstav = ordet.substring(n, n + 1);
+      if (brugteBogstaver.contains(bogstav)) {
+        synligtOrd = synligtOrd + bogstav;
+      } else {
+        synligtOrd = synligtOrd + " _ ";
+        spilletErVundet = false;
+      }
+    }
+    return synligtOrd;
   }
 
     public void gætBogstav(String bogstav) {
@@ -116,6 +142,32 @@ public class Galgelogik {
     opdaterSynligtOrd();
   }
 
+  // Metode til at gættebogstav når et ord er valgt.
+  public void gætBogstav(String bogstav, String ordet) {
+    if (bogstav.length() != 1) return;
+    System.out.println("Der gættes på bogstavet: " + bogstav);
+    if (brugteBogstaver.contains(bogstav)) return;
+    if (spilletErVundet || spilletErTabt) return;
+
+    brugteBogstaver.add(bogstav);
+
+    if (ordet.contains(bogstav)) {
+      sidsteBogstavVarKorrekt = true;
+      System.out.println("Bogstavet var korrekt: " + bogstav);
+    } else {
+      // Vi gættede på et bogstav der ikke var i ordet.
+      sidsteBogstavVarKorrekt = false;
+      System.out.println("Bogstavet var IKKE korrekt: " + bogstav);
+      antalForkerteBogstaver = antalForkerteBogstaver + 1;
+
+//      Var denne indekseret forkert i den udleverede kode? jeg skulle ihvertfald selv sætter ">" og vi har jo kun fået 6 billeder så hvis den indekserer til 7 er der ikke noget at vise.
+      if (antalForkerteBogstaver >= 6) {
+        spilletErTabt = true;
+      }
+    }
+    opdaterSynligtOrdFraValg(ordet);
+  }
+
   public void logStatus() {
     System.out.println("---------- ");
     System.out.println("- ordet (skult) = " + ordet);
@@ -127,21 +179,8 @@ public class Galgelogik {
     System.out.println("---------- ");
   }
 
-
-  public static String hentUrl(String url) throws IOException {
-    System.out.println("Henter data fra " + url);
-    BufferedReader br = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
-    StringBuilder sb = new StringBuilder();
-    String linje = br.readLine();
-    while (linje != null) {
-      sb.append(linje + "\n");
-      linje = br.readLine();
-    }
-    return sb.toString();
-  }
-
-
-  public void hentOrdFraDr() throws Exception {
+  // redigeret så den returnerer objektet
+  public ArrayList<String> hentOrdFraDr() throws Exception {
     String data = hentUrl("https://dr.dk");
     //System.out.println("data = " + data);
 
@@ -164,4 +203,6 @@ public class Galgelogik {
 
     System.out.println("muligeOrd = " + muligeOrd);
     nulstil();
+
+    return muligeOrd;
   }}

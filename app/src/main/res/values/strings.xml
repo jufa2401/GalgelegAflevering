@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GalgelegAflevering</string>
+    <string name="app_name">s165158 GalgelegAflevering</string>
     <string name="Galgen">Galgen</string>
 
     <!-- TODO: App content strings -->
@@ -30,6 +30,10 @@
     <string name="you_lose">Du tabte</string>
     <string name="game_has_ended">Spillet er slut, tryk på knappen for at fortsætte</string>
     <string name="ok">OK</string>
+    <string name="click_to_continue">Tryk et sted på skærmen for at fortsætte</string>
+    <string name="start_game_2player">2 Players</string>
+    <string name="start_game_1player">1 Player</string>
+    <string name="choose_word">Vælgt ét ord til modspiller</string>
 
     <string-array name="example_strings">
         <item>Eksempel</item>

@@ -3,11 +3,20 @@ package com.example.s165158.galgelegaflevering;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.github.jinatonic.confetti.CommonConfetti;
+import com.github.jinatonic.confetti.ConfettiManager;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 
 public class MainActivity extends AppCompatActivity {
-    TextView title_top;
+    public static boolean confettiManagerUp = FALSE;
+    private TextView title_top;
+    private ConfettiManager confettiManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
         title_top = findViewById(R.id.head);
         String title = getString(resid);
         title_top.setText(title);
+    }
+
+    public void setConfettiManager(ViewGroup container, int color, long durationInMillis) {
+        confettiManager = CommonConfetti.rainingConfetti(container, new int[]{color})
+                .stream(durationInMillis);
+        confettiManagerUp = TRUE;
+    }
+
+    public void terminateConfettiManager() {
+        confettiManager.terminate();
     }
 
     //    Metode til at stoppe brugeren for at gå tilbage til tidligere skærme, hvor han ikke skal.

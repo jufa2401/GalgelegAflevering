@@ -65,11 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //if data as inserted incorrectly it will return -1
         Log.d("result was", result+"");
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != -1;
     }
 
     /**
@@ -78,7 +74,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     public ArrayList<String> getData() {
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        // Regular SelectQuery
+        //String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+        // Select Query with sorting
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY score DESC";
         SQLiteDatabase db  = this.getReadableDatabase();
         Cursor cursor      = db.rawQuery(selectQuery, null);
         ArrayList<String> data2 = new ArrayList<>();

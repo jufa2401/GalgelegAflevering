@@ -1,8 +1,12 @@
 package com.example.s165158.galgelegaflevering;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +23,15 @@ public class WinnerScreen extends Fragment {
     private TextView winner, winner_descriptive, winner_score, endGame_TextView;
     private Button play_again, high_scores;
     private int score;
+    private AppCompatActivity mActivity;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        if (context instanceof Activity)
+            mActivity = (AppCompatActivity) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +60,7 @@ public class WinnerScreen extends Fragment {
 
         winner_score.setText(stringscore);
 
+        ((MainActivity) mActivity).setConfettiManager(container, Color.RED, 1500);
 
         play_again = rootView.findViewById(R.id.button_play_again_winner_loser);
         play_again.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +68,6 @@ public class WinnerScreen extends Fragment {
             public void onClick(View v) {
                 Menu menu = new Menu();
 // Insert the fragment by replacing any existing fragment
-
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, menu)

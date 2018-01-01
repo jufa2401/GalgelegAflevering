@@ -1,17 +1,18 @@
 package com.example.s165158.galgelegaflevering;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
+import static java.lang.Boolean.TRUE;
 
 /**
  * Created by s165158 on 06-11-2017.
@@ -19,33 +20,57 @@ import com.example.s165158.galgelegaflevering.Objekter.LetterAdapter;
 
 public class Menu extends Fragment implements View.OnClickListener {
 
-    Button start_game, help, high_scores;
+    public static boolean twoPlayers;
+    private Button start_game_1player, start_game_2player, help, high_scores;
+    private AppCompatActivity mActivity;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        if (context instanceof Activity)
+            mActivity = (AppCompatActivity) context;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.fragment_spillet);
         View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
-
+        twoPlayers = false;
         getActivity().setTitle(R.string.menu);
-        start_game = rootView.findViewById(R.id.button_start_game);
-        start_game.setOnClickListener(this);
+        start_game_1player = rootView.findViewById(R.id.button_start_game_1player);
+        start_game_1player.setOnClickListener(this);
+
+        start_game_2player = rootView.findViewById(R.id.button_start_game_2player);
+        start_game_2player.setOnClickListener(this);
+
         help = rootView.findViewById(R.id.button_help);
         help.setOnClickListener(this);
         high_scores = rootView.findViewById(R.id.button_high_score);
         high_scores.setOnClickListener(this);
 
+        if (MainActivity.confettiManagerUp == TRUE) {
+            ((MainActivity) mActivity).terminateConfettiManager();
+        }
+
         return rootView;
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.button_start_game:
-                Spillet spillet = new Spillet();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, spillet).addToBackStack("back to menu from game").commit();
+
+            case R.id.button_start_game_1player:
+                Spillet spil_1 = new Spillet();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, spil_1).addToBackStack("back to menu from game").commit();
                 break;
+            case R.id.button_start_game_2player:
+                twoPlayers = true;
+                Spillet spil_2 = new Spillet();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, spil_2).addToBackStack("back to menu from game").commit();
+                break;
+
             case R.id.button_high_score:
                 ListFragment scores = new ListFragment();
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, scores).addToBackStack("back to menu from scores").commit();

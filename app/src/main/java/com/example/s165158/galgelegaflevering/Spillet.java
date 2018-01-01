@@ -3,11 +3,13 @@ package com.example.s165158.galgelegaflevering;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -20,17 +22,20 @@ import com.example.s165158.galgelegaflevering.Udleveret.Galgelogik;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import static java.lang.Boolean.FALSE;
+
 public class Spillet extends Fragment {
-    private String date;
+    private String date, chosenWord;
     private SimpleDateFormat dateformatter;
     private Date date2;
     private int antalforkerte;
     private DatabaseHelper databaseHelper;
     private int forsøg = 0;
     private String savedWord, end_game;
-    private TextView the_word, status;
+    private TextView the_word, status, click_to_continue;
     private LetterAdapter ltrAdapt;
     private GridView letters;
     private Galgelogik galgelogik = new Galgelogik();
@@ -44,6 +49,8 @@ public class Spillet extends Fragment {
             R.drawable.forkert5,
             R.drawable.forkert6,
     };
+    private ArrayList<String> ord;
+    private String[] ordArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,13 +63,13 @@ public class Spillet extends Fragment {
         ltrAdapt = new LetterAdapter(this);
 
         the_word = rootView.findViewById(R.id.the_word);
+        click_to_continue = rootView.findViewById(R.id.click_to_continue);
 
         status = rootView.findViewById(R.id.statusText);
         status.setText(getResources().getText(R.string.waiting));
 
         galge = rootView.findViewById(R.id.galgen);
         galge.setImageResource(R.drawable.galge);
-
 
         play();
 
@@ -71,14 +78,14 @@ public class Spillet extends Fragment {
 
     public void play() {
         galgelogik.nulstil();
+
 //        the_word.setText("");
 //        Async task til at opdatere ord fra DR.
         new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-
-                    galgelogik.hentOrdFraDr();
+                    ord = galgelogik.hentOrdFraDr();
                     Log.e("ord fra DR", "DR Ord hentet, eller fejl i Galgelogik");
                 } catch (InterruptedException e) {
                     Thread.interrupted();
@@ -96,19 +103,58 @@ public class Spillet extends Fragment {
             //            Efer udførelsen af at hente ordet fra DR.
             @Override
             protected void onPostExecute(Object result) {
-                the_word.setText(galgelogik.getSynligtOrd());
+                if (Menu.twoPlayers == false) {
+                    the_word.setText(galgelogik.getSynligtOrd());
+                } else {
+                    chosenWord = createChooseWordDialog();
+
+                }
                 letters.setAdapter(ltrAdapt);
                 status.setText(getResources().getText(R.string.welcome));
 
             }
         }.execute();
     }
+
+    public String createChooseWordDialog() {
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(getContext());
+        ordArray = new String[ord.size()];
+        ordArray = ord.toArray(ordArray);
+
+        alertbox.setTitle(R.string.choose_word)
+                .setItems(ordArray, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int pos) {
+
+                        chosenWord = ordArray[pos];
+
+                        the_word.setText(galgelogik.opdaterSynligtOrdFraValg(chosenWord));
+//pos will give the selected item position
+                    }
+                });
+
+        alertbox.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                Intent intent = getActivity().getIntent();
+                getActivity().finish();
+                startActivity(intent);
+            }
+        });
+
+        alertbox.show();
+        //the_word.setText(galgelogik.opdaterSynligtOrdFraValg(chosenWord));
+        return chosenWord;
+    }
     // Når man trykker på tastaturet
     public void letterPressed(char letterChar) {
-
-        galgelogik.gætBogstav("" + letterChar);
+        if (Menu.twoPlayers == false) {
+            galgelogik.gætBogstav("" + letterChar);
+        } else if (Menu.twoPlayers == true) {
+            galgelogik.gætBogstav("" + letterChar, chosenWord);
+        }
         forsøg++;
         update();
+
         if (galgelogik.erSpilletSlut()) return;
 
     }
@@ -137,7 +183,12 @@ public class Spillet extends Fragment {
         }
 //        Når spillet er slut. Altså ting der er generelle både for når der er tabt og vundet.
         if (galgelogik.erSpilletSlut() == true) {
-            savedWord = galgelogik.getOrdet();
+            if (Menu.twoPlayers == true) {
+                savedWord = chosenWord;
+            } else {
+                savedWord = galgelogik.getOrdet();
+            }
+
             the_word.setText(savedWord);
             antalforkerte = galgelogik.getAntalForkerteBogstaver();
             date2 = new Date();
@@ -145,43 +196,56 @@ public class Spillet extends Fragment {
             date = dateformatter.format(date2);
             Log.d("transferred data", "Følgende gemmes i databasen: "+ "noname" + forsøg + date);
             databaseHelper.addData("noname",savedWord,forsøg-antalforkerte,date);
+            //Sørger for at bogstaverne ikke længere kan klikkes på, og at det indikeres at de ikke kan klikkes på til brugeren.
+            letters.setClickable(FALSE);
+            letters.setVisibility(View.INVISIBLE);
 
+            click_to_continue.setVisibility(View.VISIBLE);
+            click_to_continue.setText(R.string.click_to_continue);
 
-//            Dialog boks for at brugeren skal vide at der sker noget vigtigt.
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder
-                    .setMessage(R.string.game_has_ended)
-                    .setCancelable(false)
-                    .setNegativeButton(getResources().getText(R.string.ok), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    WinnerScreen winnerScreen = new WinnerScreen();
-                                    LoserScreen loserScreen = new LoserScreen();
-                                    final Bundle bundle = new Bundle();
+            getView().setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    //            Dialog boks for at brugeren skal vide at der sker noget vigtigt.
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder
+                            .setMessage(R.string.game_has_ended)
+                            .setCancelable(false)
+                            .setNegativeButton(getResources().getText(R.string.ok), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            WinnerScreen winnerScreen = new WinnerScreen();
+                                            LoserScreen loserScreen = new LoserScreen();
+                                            final Bundle bundle = new Bundle();
 //                                    sender scoren med
-                                    bundle.putInt("score",forsøg-antalforkerte);
-                                    bundle.putString("endgame tekst", end_game);
+                                            bundle.putInt("score", forsøg - antalforkerte);
+                                            bundle.putString("endgame tekst", end_game);
 
-                                    if (galgelogik.erSpilletVundet() == true) {
-                                        winnerScreen.setArguments(bundle);
+                                            if (galgelogik.erSpilletVundet() == true) {
+                                                winnerScreen.setArguments(bundle);
 
-                                        getFragmentManager().beginTransaction()
-                                                .replace(R.id.fragment_container, winnerScreen)
-                                                .addToBackStack(null)
-                                                .commit();
+                                                getFragmentManager().beginTransaction()
+                                                        .replace(R.id.fragment_container, winnerScreen)
+                                                        .addToBackStack(null)
+                                                        .commit();
+                                            }
+                                            if (galgelogik.erSpilletTabt() == true) {
+                                                loserScreen.setArguments(bundle);
+                                                getFragmentManager().beginTransaction()
+                                                        .replace(R.id.fragment_container, loserScreen)
+                                                        .addToBackStack(null)
+                                                        .commit();
+
+                                            }
+                                        }
                                     }
-                                    if (galgelogik.erSpilletTabt() == true) {
-                                        loserScreen.setArguments(bundle);
-                                        getFragmentManager().beginTransaction()
-                                                .replace(R.id.fragment_container, loserScreen)
-                                                .addToBackStack(null)
-                                                .commit();
+                            );
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return false;
+                }
+            });
 
-                                    }
-                                }
-                            }
-                    );
-            AlertDialog alert = builder.create();
-            alert.show();
+
             return;
         }
 
@@ -230,6 +294,9 @@ public class Spillet extends Fragment {
 
     public int getForsøg() {return forsøg;}
 
+    public void setOrd(ArrayList<String> ord) {
+        this.ord = ord;
+    }
 }
 
 
