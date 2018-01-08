@@ -109,6 +109,10 @@ public class Spillet extends Fragment {
             @Override
             protected void onPostExecute(Object result) {
                 if (getActivity() != null) {   // Stopper crash hvis man trykker tilbage, mens den er igang med at hente ord.
+
+                    if (succes) toastMessage("Ord hentet fra DR");
+                    if (!succes) toastMessage("Kunne ikke hente ord fra DR");
+
                     if (!Menu.twoPlayers) {
                         the_word.setText(galgelogik.getSynligtOrd());
                     } else {
