@@ -38,6 +38,7 @@ public class WinnerScreen extends Fragment {
         getActivity().setTitle(R.string.winner_screen);
         View rootView = inflater.inflate(R.layout.winnerloser_scren, container, false);
 
+        ((MainActivity) mActivity).setDisableBack(true);
 
         winner = rootView.findViewById(R.id.winner_loser_text);
         winner.setText(R.string.you_won);
@@ -70,7 +71,7 @@ public class WinnerScreen extends Fragment {
 // Insert the fragment by replacing any existing fragment
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .addToBackStack(null)
+                        .addToBackStack("menu")
                         .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                         .replace(R.id.fragment_container, menu)
                         .commit();
@@ -88,7 +89,7 @@ public class WinnerScreen extends Fragment {
                 bundle.putInt("score", score);
                 highscore.setArguments(bundle);
                 getFragmentManager().beginTransaction()
-                        .addToBackStack(null)
+                        .addToBackStack("score")
                         .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                         .replace(R.id.fragment_container, highscore)
                         .commit();

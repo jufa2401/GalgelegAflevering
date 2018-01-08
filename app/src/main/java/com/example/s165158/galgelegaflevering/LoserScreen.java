@@ -22,6 +22,7 @@ import com.github.jinatonic.confetti.ConfettiManager;
 
 public class LoserScreen extends Fragment {
 
+    private static String TAG = LoserScreen.class.getName();
     private TextView loser, loser_descriptive, loser_score, endGame_TextView;
     private Button play_again, high_scores;
     private int score;
@@ -41,7 +42,7 @@ public class LoserScreen extends Fragment {
         getActivity().setTitle(R.string.loser_screen);
         //getActivity().setTitle(R.string.loser_screen);
         View rootView = inflater.inflate(R.layout.winnerloser_scren, container, false);
-
+        ((MainActivity) mActivity).setDisableBack(true);
         loser = rootView.findViewById(R.id.winner_loser_text);
         loser.setText(R.string.you_lose);
 
@@ -74,7 +75,7 @@ public class LoserScreen extends Fragment {
 
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .addToBackStack(null)
+                        .addToBackStack("menu")
                         .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                         .replace(R.id.fragment_container, menu)
                         .commit();
@@ -102,5 +103,6 @@ public class LoserScreen extends Fragment {
 
         return rootView;
     }
+
 
 }

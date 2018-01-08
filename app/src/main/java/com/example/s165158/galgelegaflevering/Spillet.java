@@ -242,7 +242,7 @@ public class Spillet extends Fragment {
                                                 winnerScreen.setArguments(bundle);
 
                                                 getFragmentManager().beginTransaction()
-                                                        .addToBackStack(null)
+                                                        .addToBackStack("win")
                                                         .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                                                         .replace(R.id.fragment_container, winnerScreen)
                                                         .commit();
@@ -250,7 +250,7 @@ public class Spillet extends Fragment {
                                             if (galgelogik.erSpilletTabt() == true) {
                                                 loserScreen.setArguments(bundle);
                                                 getFragmentManager().beginTransaction()
-                                                        .addToBackStack(null)
+                                                        .addToBackStack("lose")
                                                         .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                                                         .replace(R.id.fragment_container, loserScreen)
 

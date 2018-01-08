@@ -15,10 +15,9 @@ import static java.lang.Boolean.TRUE;
 // Bug fundet 2. Januar, man kan gå tilbage fra win/lose -
 public class MainActivity extends AppCompatActivity {
     public static boolean confettiManagerUp = FALSE;
+    public boolean disableback = false;
     private TextView title_top;
     private ConfettiManager confettiManager;
-
-
     private boolean twoplayers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,36 +52,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //    Metode til at stoppe brugeren for at gå tilbage til tidligere skærme, hvor han ikke skal.
-    @Override
-    public void onBackPressed() {
-        int count = getFragmentManager().getBackStackEntryCount();
-        switch (count) {
-            case 0:
-                super.onBackPressed();
-                break;
-            case 1:
-                super.onBackPressed();
-                break;
-            case 2:
-//
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            default:
-                getFragmentManager().popBackStack();
-                break;
-        }
-
-    }
-
     // Hvis et spil er gået i gang, men er røget ud af hukommelsen, skal man vide hvorvidt det er et twoplayer eller single player spil
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -98,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         Menu.twoPlayers = twoplayers;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!disableback) super.onBackPressed();
+    }
 
-
+    public void setDisableBack(boolean val) {
+        disableback = val;
+    }
 }

@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,9 +34,9 @@
        android:id="@+id/descriptive_text"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:paddingLeft="10dp"
        android:layout_below="@+id/score_text"
-       android:text="ID, Score, Ord, Dato:" />
+       android:paddingLeft="10dp"
+       android:text="   ID  |  Score        |           Ord   |                             Dato        |" />
 
    <FrameLayout
        android:id="@+id/frameLayout"
@@ -47,18 +46,6 @@
        android:layout_alignParentStart="true"
        android:layout_below="@+id/descriptive_text">
 
-
-      <android.support.v7.widget.RecyclerView
-          android:id="@+id/listRecyclerView"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginBottom="0dp"
-
-          android:background="@android:color/white"
-          android:paddingBottom="0dp"
-          tools:context=".fragments.ListFragment">
-
-      </android.support.v7.widget.RecyclerView>
 
    </FrameLayout>
 
@@ -75,6 +62,20 @@
        android:background="@drawable/shadow"
        android:foreground="?android:attr/selectableItemBackground"
        android:text="@string/play_again" />
+
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/listRecyclerView"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+
+       android:layout_alignParentStart="true"
+       android:layout_alignTop="@+id/frameLayout"
+       android:background="@android:color/white"
+       android:paddingBottom="0dp"
+       tools:context=".fragments.ListFragment"
+       tools:listitem="@layout/fragment_list_item">
+
+   </android.support.v7.widget.RecyclerView>
 
 
 </RelativeLayout>

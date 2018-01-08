@@ -35,6 +35,7 @@ public class ListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.listRecyclerView);
         getActivity().setTitle(R.string.high_score);
+        ((MainActivity) getActivity()).setDisableBack(false);
         databaseHelper = new DatabaseHelper(getActivity());
 
         score_text_TextView = rootView.findViewById(R.id.score_text);
