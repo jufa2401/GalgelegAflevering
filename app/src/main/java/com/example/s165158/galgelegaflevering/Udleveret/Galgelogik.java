@@ -182,7 +182,7 @@ public class Galgelogik {
   // redigeret så den returnerer objektet
   public ArrayList<String> hentOrdFraDr() throws Exception {
     String data = hentUrl("https://dr.dk");
-    //System.out.println("data = " + data);
+    System.out.println("data = " + data);
 
     data = data.substring(data.indexOf("<body")). // fjern headere
             replaceAll("<.+?>", " ").toLowerCase(). // fjern tags
@@ -193,13 +193,19 @@ public class Galgelogik {
             replaceAll("&oslash;", "ø"). // erstat HTML-tegn
             replaceAll("&#229;", "å"). // erstat HTML-tegn
             replaceAll("[^a-zæøå]", " "). // fjern tegn der ikke er bogstaver
-            replaceAll(" [a-zæøå] "," "). // fjern 1-bogstavsord
-            replaceAll(" [a-zæøå][a-zæøå] "," "); // fjern 2-bogstavsord
+            replaceAll(" [a-zæøå] ", ""). // fjern 1-bogstavsord
+            replaceAll(" [a-zæøå][a-zæøå] ", " "). // fjern 2-bogstavsord
+
+            // Forsøg på at filtrere 2 ord fra igen
+                    replaceAll("\b[a-zæøå]{0,2}\b ?", ""); // fjern 2-bogstavsord
+
 
     System.out.println("data = " + data);
     System.out.println("data = " + Arrays.asList(data.split("\\s+")));
+
     muligeOrd.clear();
     muligeOrd.addAll(new HashSet<String>(Arrays.asList(data.split(" "))));
+    muligeOrd.remove(0); // index 0 gav muligheden for at vælge intettegn, så den fjernes
 
     System.out.println("muligeOrd = " + muligeOrd);
     nulstil();

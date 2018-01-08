@@ -70,8 +70,9 @@ public class WinnerScreen extends Fragment {
 // Insert the fragment by replacing any existing fragment
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, menu)
                         .addToBackStack(null)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                        .replace(R.id.fragment_container, menu)
                         .commit();
 
             }
@@ -87,8 +88,9 @@ public class WinnerScreen extends Fragment {
                 bundle.putInt("score", score);
                 highscore.setArguments(bundle);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, highscore)
                         .addToBackStack(null)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                        .replace(R.id.fragment_container, highscore)
                         .commit();
 
             }

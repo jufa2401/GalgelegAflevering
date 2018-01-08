@@ -2,10 +2,12 @@ package com.example.s165158.galgelegaflevering;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,8 +51,9 @@ public class Spillet extends Fragment {
             R.drawable.forkert5,
             R.drawable.forkert6,
     };
-    private ArrayList<String> ord;
+    private ArrayList<String> ord = new ArrayList<>();
     private String[] ordArray;
+    private MediaPlayer mp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,15 +80,17 @@ public class Spillet extends Fragment {
     }
 
     public void play() {
-        galgelogik.nulstil();
+        // galgelogik.nulstil();
 
 //        the_word.setText("");
 //        Async task til at opdatere ord fra DR.
         new AsyncTask() {
+            boolean succes = false;
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
                     ord = galgelogik.hentOrdFraDr();
+                    succes = true;
                     Log.e("ord fra DR", "DR Ord hentet, eller fejl i Galgelogik");
                 } catch (InterruptedException e) {
                     Thread.interrupted();
@@ -103,20 +108,32 @@ public class Spillet extends Fragment {
             //            Efer udførelsen af at hente ordet fra DR.
             @Override
             protected void onPostExecute(Object result) {
-                if (Menu.twoPlayers == false) {
-                    the_word.setText(galgelogik.getSynligtOrd());
-                } else {
-                    chosenWord = createChooseWordDialog();
-
+                if (getActivity() != null) {   // Stopper crash hvis man trykker tilbage, mens den er igang med at hente ord.
+                    if (!Menu.twoPlayers) {
+                        the_word.setText(galgelogik.getSynligtOrd());
+                    } else {
+                        if (succes == false) {
+                            ord.add("bil");
+                            ord.add("computer");
+                            ord.add("programmering");
+                            ord.add("motorvej");
+                            ord.add("busrute");
+                            ord.add("gangsti");
+                            ord.add("skovsnegl");
+                            ord.add("solsort");
+                            ord.add("seksten");
+                            ord.add("sytten");
+                        }
+                        chosenWord = createChooseWordDialog(ord);
+                    }
+                    letters.setAdapter(ltrAdapt);
+                    status.setText(getResources().getText(R.string.welcome));
                 }
-                letters.setAdapter(ltrAdapt);
-                status.setText(getResources().getText(R.string.welcome));
-
             }
         }.execute();
     }
 
-    public String createChooseWordDialog() {
+    public String createChooseWordDialog(ArrayList<String> ord) {
         AlertDialog.Builder alertbox = new AlertDialog.Builder(getContext());
         ordArray = new String[ord.size()];
         ordArray = ord.toArray(ordArray);
@@ -168,7 +185,7 @@ public class Spillet extends Fragment {
                     + getResources().getString(R.string.game_end);
 
 //            Mediaplayer til 3. Aflevering
-            final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.yababy);
+            mp = MediaPlayer.create(getContext(), R.raw.smb_stage_clear);
             mp.start();
 
         }
@@ -177,7 +194,8 @@ public class Spillet extends Fragment {
             status.setText((getResources().getString(R.string.loss)+" " + galgelogik.getOrdet()));
             end_game = getResources().getString(R.string.loss)+" " + galgelogik.getOrdet() + getResources().getText(R.string.game_end);
 //            Mediapleyer til 3. Aflevering
-            final MediaPlayer mp = MediaPlayer.create(getContext(),R.raw.dumbass);
+
+            mp = MediaPlayer.create(getContext(), R.raw.smb_gameover);
             mp.start();
 
         }
@@ -224,18 +242,23 @@ public class Spillet extends Fragment {
                                                 winnerScreen.setArguments(bundle);
 
                                                 getFragmentManager().beginTransaction()
-                                                        .replace(R.id.fragment_container, winnerScreen)
                                                         .addToBackStack(null)
+                                                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                                                        .replace(R.id.fragment_container, winnerScreen)
                                                         .commit();
                                             }
                                             if (galgelogik.erSpilletTabt() == true) {
                                                 loserScreen.setArguments(bundle);
                                                 getFragmentManager().beginTransaction()
-                                                        .replace(R.id.fragment_container, loserScreen)
                                                         .addToBackStack(null)
+                                                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                                                        .replace(R.id.fragment_container, loserScreen)
+
                                                         .commit();
 
                                             }
+                                            // Afslutter lydafspilning ved overgang til nyt fragment
+                                            mp.stop();
                                         }
                                     }
                             );
@@ -262,11 +285,22 @@ public class Spillet extends Fragment {
         } else if (galgelogik.erSidsteBogstavKorrekt() == true) {
             status.setText("Du gættede rigtigt!");
             the_word.setText(galgelogik.getSynligtOrd());
-
-
         }
     }
 
+    @Override
+    public Context getContext() {
+        Context context;
+        int ver = Build.VERSION.SDK_INT;
+        if (ver > 22) {
+            context = super.getContext();
+        }
+        // Til gamle APIer
+        else {
+            context = getActivity();
+        }
+        return context;
+    }
 
     /**
      * Custom toast

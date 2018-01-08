@@ -14,6 +14,9 @@ import com.example.s165158.galgelegaflevering.R;
 
 public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapter.ViewHolder> {
 
+    Listener mListener;
+    //        Name array var udtænkt til hvis man ville tillade brugeren at sætte en navn for sig selv, denne funktion er endnu ikke udviklet.
+    private String[] idarray, namearray, wordarray, scorearray, datearray;
     public RecyclerListAdapter(String[] idarray, String[] namearray, String[] wordarray, String[] scorearray, String[] datearray) {
         this.idarray = idarray;
         this.namearray = namearray;
@@ -22,25 +25,8 @@ public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapt
         this.datearray = datearray;
     }
 
-    private String[] idarray, namearray, wordarray, scorearray, datearray;
-    Listener mListener;
-
-
-//    On click listener for position
-    public interface Listener{
-        void onClick(int position);
-    }
-
     public void setListener(Listener listener) {
         mListener = listener;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        View view;
-        public ViewHolder(View itemView) {
-            super(itemView);
-            view =  itemView;
-        }
     }
 
     @Override
@@ -49,17 +35,18 @@ public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapt
 
         return new ViewHolder(view);
     }
+
 //    Bemærk jeg bruger ikke name endnu, det er et parameter jeg lagde ind i klassen fordi jeg kunne forestille mig at implementere det senere enten sammen eller i stedet for ID.
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         View view = holder.view;
-        TextView id = (TextView) view.findViewById(R.id.list_item_ID);
+        TextView id = view.findViewById(R.id.list_item_ID);
         id.setText(idarray[position]);
-        TextView word = (TextView) view.findViewById(R.id.list_item_Word);
+        TextView word = view.findViewById(R.id.list_item_Word);
         word.setText(wordarray[position]);
-        TextView date = (TextView) view.findViewById(R.id.list_item_Date);
+        TextView date = view.findViewById(R.id.list_item_Date);
         date.setText(datearray[position]);
-        TextView score = (TextView) view.findViewById(R.id.list_item_Score);
+        TextView score = view.findViewById(R.id.list_item_Score);
         score.setText(scorearray[position]);
         view.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -74,5 +61,19 @@ public class RecyclerListAdapter  extends RecyclerView.Adapter<RecyclerListAdapt
     @Override
     public int getItemCount() {
         return scorearray.length;
+    }
+
+    //    On click listener for position
+    public interface Listener {
+        void onClick(int position);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        View view;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            view = itemView;
+        }
     }
 }

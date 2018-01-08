@@ -12,21 +12,24 @@ import com.github.jinatonic.confetti.ConfettiManager;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-
+// Bug fundet 2. Januar, man kan gå tilbage fra win/lose -
 public class MainActivity extends AppCompatActivity {
     public static boolean confettiManagerUp = FALSE;
     private TextView title_top;
     private ConfettiManager confettiManager;
 
+
+    private boolean twoplayers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Tvinger aktiviteten til at køre i portrait mode.
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_menu);
         Menu menu = new Menu();
 
         getFragmentManager().beginTransaction().add(R.id.fragment_container, menu).commit();
+
     }
 
     //  Metode til at sætte titlen for skærmbilledet
@@ -44,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void terminateConfettiManager() {
-        confettiManager.terminate();
+        // Checker om objektet er null, da en null pointer exception blev fundet under specifikke omstændigheder
+        if (confettiManager instanceof ConfettiManager) {
+            confettiManager.terminate();
+        }
     }
 
     //    Metode til at stoppe brugeren for at gå tilbage til tidligere skærme, hvor han ikke skal.
@@ -76,4 +82,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    // Hvis et spil er gået i gang, men er røget ud af hukommelsen, skal man vide hvorvidt det er et twoplayer eller single player spil
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("twoplayers", Menu.twoPlayers);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        twoplayers = savedInstanceState.getBoolean("twoplayers");
+        Menu.twoPlayers = twoplayers;
+    }
+
+
+
 }

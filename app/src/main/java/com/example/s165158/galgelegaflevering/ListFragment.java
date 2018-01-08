@@ -2,6 +2,7 @@ package com.example.s165158.galgelegaflevering;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.s165158.galgelegaflevering.Objekter.RecyclerListAdapter;
 import com.example.s165158.galgelegaflevering.database.DatabaseHelper;
@@ -54,8 +54,7 @@ public class ListFragment extends Fragment {
         }
 
 
-
-        button_playagain = (Button)rootView.findViewById(R.id.button_play_again);
+        button_playagain = rootView.findViewById(R.id.button_play_again);
         button_playagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +64,7 @@ public class ListFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, menu)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                         .commit();
 
             }
@@ -93,8 +93,17 @@ public class ListFragment extends Fragment {
      * customizable toast
      * @param message
      */
+
     private void toastMessage(String message){
-        Toast.makeText(getContext(),message, Toast.LENGTH_LONG).show();
+        int ver = Build.VERSION.SDK_INT;
+        if (ver > 22) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
+        // Til gamle APIer
+        else {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
+
     }
 
 

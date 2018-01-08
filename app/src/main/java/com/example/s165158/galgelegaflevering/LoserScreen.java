@@ -42,13 +42,11 @@ public class LoserScreen extends Fragment {
         //getActivity().setTitle(R.string.loser_screen);
         View rootView = inflater.inflate(R.layout.winnerloser_scren, container, false);
 
-
         loser = rootView.findViewById(R.id.winner_loser_text);
         loser.setText(R.string.you_lose);
 
         loser_descriptive = rootView.findViewById(R.id.winner_loser_score_descriptive_text);
         loser_descriptive.setText(R.string.score_text);
-
 
         loser_score = rootView.findViewById(R.id.winner_loser_score);
         Bundle args = getArguments();
@@ -64,11 +62,7 @@ public class LoserScreen extends Fragment {
 
         loser_score.setText(stringscore);
 
-
         ((MainActivity) mActivity).setConfettiManager(container, Color.BLACK, 500);
-
-
-
 
         play_again = rootView.findViewById(R.id.button_play_again_winner_loser);
         play_again.setOnClickListener(new View.OnClickListener() {
@@ -80,11 +74,10 @@ public class LoserScreen extends Fragment {
 
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, menu)
                         .addToBackStack(null)
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                        .replace(R.id.fragment_container, menu)
                         .commit();
-
-
             }
         });
 
@@ -98,13 +91,14 @@ public class LoserScreen extends Fragment {
                 bundle.putInt("score", score);
                 highscore.setArguments(bundle);
                 getFragmentManager().beginTransaction()
+                        .addToBackStack("High Score")
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                         .replace(R.id.fragment_container, highscore)
-                        .addToBackStack(null)
+
                         .commit();
 
             }
         });
-
 
         return rootView;
     }

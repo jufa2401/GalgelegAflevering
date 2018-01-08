@@ -29,8 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL4 = "score";
     private static final String COL5 = "date";
 
-
-
     public DatabaseHelper(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
@@ -38,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 +" TEXT, " + COL3 +" TEXT, " + COL4 +" TEXT, "+ COL5 +" DATE)";
+                COL2 + " TEXT, " + COL3 + " TEXT, " + COL4 + " INT, " + COL5 + " DATE)";
         db.execSQL(createTable);
     }
 
@@ -115,12 +113,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return ColumnArray;
     }
-
-
-
-
-
-
 
     /**
      * Returns only the ID that matches the name passed in

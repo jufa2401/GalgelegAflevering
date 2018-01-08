@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -63,17 +64,20 @@ public class Menu extends Fragment implements View.OnClickListener {
 
             case R.id.button_start_game_1player:
                 Spillet spil_1 = new Spillet();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, spil_1).addToBackStack("back to menu from game").commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right).replace(R.id.fragment_container, spil_1).addToBackStack("back to menu from game").commit();
                 break;
             case R.id.button_start_game_2player:
                 twoPlayers = true;
                 Spillet spil_2 = new Spillet();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, spil_2).addToBackStack("back to menu from game").commit();
+                getFragmentManager().beginTransaction().setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right).replace(R.id.fragment_container, spil_2).addToBackStack("back to menu from game").commit();
                 break;
 
             case R.id.button_high_score:
                 ListFragment scores = new ListFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, scores).addToBackStack("back to menu from scores").commit();
+
+                getFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                        .replace(R.id.fragment_container, scores).addToBackStack("back to menu from scores").commit();
                 break;
             case R.id.button_help:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -91,5 +95,19 @@ public class Menu extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    @Override
+    public Context getContext() {
+        Context context;
+        int ver = Build.VERSION.SDK_INT;
+        if (ver > 22) {
+            context = super.getContext();
+        }
+        // Til gamle APIer
+        else {
+            context = getActivity();
+        }
+        return context;
     }
 }

@@ -5,15 +5,12 @@ package com.example.s165158.galgelegaflevering.Objekter;
  */
 
 
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.s165158.galgelegaflevering.R;
 import com.example.s165158.galgelegaflevering.Spillet;
@@ -24,7 +21,7 @@ public class LetterAdapter extends BaseAdapter {
     private LayoutInflater letterInf;
 
     public LetterAdapter(Spillet c) {
-        letters=new String[29];
+        letters = new String[29];
 //       tæller alfabetet op
         for (int a = 0; a < letters.length; a++) {
             letters[a] = "" + (char)(a+'a');
@@ -79,8 +76,6 @@ public class LetterAdapter extends BaseAdapter {
         return letterBtn;
 
     }
-
-
 
     @Override
     public Object getItem(int i) {
