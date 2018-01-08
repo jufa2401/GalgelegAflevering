@@ -30,6 +30,7 @@ public class ListFragment extends Fragment {
     private int score;
     private DatabaseHelper databaseHelper;
     private TextView score_text_TextView, scoreint_TextView;
+    private boolean playagain = true;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInsanceState){
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
@@ -54,23 +55,24 @@ public class ListFragment extends Fragment {
 
         }
 
-
-        button_playagain = rootView.findViewById(R.id.button_play_again);
-        button_playagain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Menu menu = new Menu();
+        if(playagain) {
+            button_playagain = rootView.findViewById(R.id.button_play_again);
+            button_playagain.setVisibility(View.VISIBLE);
+            button_playagain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Menu menu = new Menu();
 // Insert the fragment by replacing any existing fragment
 
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, menu)
-                        .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
-                        .commit();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, menu)
+                            .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                            .commit();
 
-            }
-        });
-
+                }
+            });
+        }
         RecyclerListAdapter recyclerListAdapter = new RecyclerListAdapter(databaseHelper.getColumn(0),
                 databaseHelper.getColumn(1), databaseHelper.getColumn(2),
                 databaseHelper.getColumn(3),databaseHelper.getColumn(4));
@@ -108,7 +110,9 @@ public class ListFragment extends Fragment {
     }
 
 
-
+    public void setPlayAgain(boolean val) {
+        playagain = val;
+    }
 }
 
 

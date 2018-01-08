@@ -75,7 +75,7 @@ public class Menu extends Fragment implements View.OnClickListener {
 
             case R.id.button_high_score:
                 ListFragment scores = new ListFragment();
-
+                scores.setPlayAgain(false);
                 getFragmentManager().beginTransaction()
                         .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
                         .replace(R.id.fragment_container, scores).addToBackStack("back to menu from scores").commit();
