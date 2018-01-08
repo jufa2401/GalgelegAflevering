@@ -36,7 +36,7 @@
        android:layout_height="wrap_content"
        android:layout_below="@+id/score_text"
        android:paddingLeft="10dp"
-       android:text="   ID  |  Score        |           Ord   |                             Dato        |" />
+       android:text="@string/descScore" />
 
    <FrameLayout
        android:id="@+id/frameLayout"
