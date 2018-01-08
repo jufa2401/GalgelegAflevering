@@ -74,5 +74,5 @@
        android:background="@drawable/shadow"
        android:foreground="?android:attr/selectableItemBackground"
        android:text="@string/play_again"
-       android:visibility="visible" />
+       android:visibility="gone" />
 </RelativeLayout>
