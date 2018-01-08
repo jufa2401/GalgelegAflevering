@@ -66,8 +66,8 @@ public class ListFragment extends Fragment {
 
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, menu)
                             .setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_left, R.animator.slide_out_right, R.animator.slide_in_right)
+                            .replace(R.id.fragment_container, menu)
                             .commit();
 
                 }
