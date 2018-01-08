@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         title_top.setText(title);
     }
 
-    public void setConfettiManager(ViewGroup container, int color, long durationInMillis) {
-        confettiManager = CommonConfetti.rainingConfetti(container, new int[]{color})
+    public void setConfettiManager(ViewGroup container, int[] color, long durationInMillis) {
+        confettiManager = CommonConfetti.rainingConfetti(container, color)
                 .stream(durationInMillis);
         confettiManagerUp = TRUE;
     }

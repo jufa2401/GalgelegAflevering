@@ -91,7 +91,7 @@ public class Spillet extends Fragment {
                 try {
                     ord = galgelogik.hentOrdFraDr();
                     succes = true;
-                    Log.e("ord fra DR", "DR Ord hentet, eller fejl i Galgelogik");
+                    Log.e("ord fra DR", "DR Ord hentet");
                 } catch (InterruptedException e) {
                     Thread.interrupted();
                     Log.e("ord fra DR", "Kunne ikke hente ord fra DR");

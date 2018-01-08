@@ -60,7 +60,7 @@ public class WinnerScreen extends Fragment {
 
         winner_score.setText(stringscore);
 
-        ((MainActivity) mActivity).setConfettiManager(container, Color.RED, 1500);
+        ((MainActivity) mActivity).setConfettiManager(container, new int[]{Color.RED, Color.BLUE, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.YELLOW}, 1500);
 
         play_again = rootView.findViewById(R.id.button_play_again_winner_loser);
         play_again.setOnClickListener(new View.OnClickListener() {
